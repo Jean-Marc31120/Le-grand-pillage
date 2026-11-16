@@ -1,0 +1,255 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+
+    <title>Le Pillage — Guide du débutant</title>
+    <meta name="description" content="Apprenez le SQL pas à pas en résolvant une enquête policière.">
+    <meta name="color-scheme" content="dark">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
+    </link>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/neat.css" />
+    <link rel="stylesheet" href="pillage.css" />
+
+    <script src="https://unpkg.com/@webcomponents/custom-elements@1.2.0/custom-elements.min.js"></script>
+    <script src="scripts/codemirror.js"></script>
+    <script src="scripts/codemirrorsql.js"></script>
+    <script src="scripts/autorefresh.js"></script>
+    <script src="scripts/main.js"></script>
+    <script>
+        window.onload = () => loadData('pillage.db');
+    </script>
+</head>
+
+<body>
+    <a class="skip-link" href="#guide">Aller au contenu</a>
+
+    <main>
+        <div class="wrap">
+
+            <header class="hero reveal">
+                <p class="hero-kicker">Guide du débutant</p>
+                <h1 class="hero-title" style="font-size:clamp(2.4rem,8vw,5.5rem);">
+                    <span class="l1">APPRENDRE</span>
+                    <span class="l2">LE SQL</span>
+                </h1>
+                <p class="hero-sub">
+                    Pas à pas, en résolvant la vraie enquête. Rien à installer&nbsp;: la base tourne
+                    dans votre navigateur. <strong>Exécuter</strong> (ou <strong>Maj+Entrée</strong>)
+                    pour voir le résultat&nbsp;; chaque requête est autocorrigée.
+                </p>
+                <div class="hero-cta">
+                    <a class="btn btn-ghost" href="index.html">← Retour à l'enquête</a>
+                    <a class="btn btn-primary" href="#guide">Étape 1 ↓</a>
+                </div>
+            </header>
+
+            <div class="bento" id="guide">
+
+                <article class="card b-full reveal">
+                    <p class="section-kicker">Le crime</p>
+                    <h3>Un magasin pillé en marge du cortège</h3>
+                    <p>
+                        Le 17 octobre 2026, pendant que la ville manifestait contre la vie chère, le
+                        magasin <strong>Électro+</strong> de Joinville-sur-Requête a été
+                        <strong>pillé</strong>. Le commissariat stocke tous ses rapports dans une base
+                        de données. Votre mission&nbsp;: retrouver les coupables, uniquement avec des
+                        requêtes SQL.
+                    </p>
+                </article>
+
+                <article class="card b-full reveal">
+                    <p class="section-kicker">Étape 1 · Bases de données</p>
+                    <h3>Des tables, des colonnes, des lignes</h3>
+                    <p>
+                        Une base de données relationnelle stocke l'information dans des
+                        <strong>tables</strong>, un peu comme des feuilles de calcul. Chaque table a
+                        des <strong>colonnes</strong> (des caractéristiques) et des
+                        <strong>lignes</strong> (des enregistrements).
+                    </p>
+                </article>
+
+                <article class="card b-full reveal">
+                    <p class="section-kicker">Étape 2 · SELECT</p>
+                    <h3>Demander des données</h3>
+                    <p>
+                        <code>SELECT * FROM table</code> signifie&nbsp;: « renvoie toutes les colonnes
+                        (<code>*</code>) de toutes les lignes&nbsp;». Ajoutez <code>LIMIT</code> pour
+                        ne pas faire déferler la table entière à l'écran.
+                    </p>
+                    <div class="console-card">
+                        <sql-exercise data-question="Affichez les 10 premières lignes de la table des rapports de police." data-comment="Remplacez les points d'interrogation par les mots qui manquent." data-solution="SELECT * FROM rapport_police LIMIT 10;" data-hide-solution="true" data-default-text="SELECT * FROM ?????? LIMIT 10;"></sql-exercise>
+                    </div>
+                </article>
+
+                <article class="card b-full reveal">
+                    <p class="section-kicker">Étape 3 · WHERE</p>
+                    <h3>Filtrer les lignes</h3>
+                    <p>
+                        <code>WHERE</code> garde uniquement les lignes qui vérifient une condition. Les
+                        dates sont écrites en nombres <em>AAAAMMJJ</em> (le 17 octobre 2026 devient
+                        <code>20261017</code>). On combine des conditions avec <code>AND</code>, et les
+                        textes s'écrivent entre guillemets&nbsp;: <code>'pillage'</code>.
+                    </p>
+                    <div class="console-card">
+                        <sql-exercise data-question="Retrouvez le rapport du pillage du 17 octobre 2026 à Joinville-sur-Requête&nbsp;: la table est `rapport_police`, les colonnes utiles sont `type`, `date` et `ville`." data-comment="Écrivez WHERE type = 'pillage' AND date = 20261017 AND ville = '…'" data-solution="SELECT * FROM rapport_police WHERE type = 'pillage' AND date = 20261017 AND ville = 'Joinville-sur-Requête';" data-hide-solution="true" data-default-text="SELECT * FROM rapport_police
+ WHERE  type = '??????'
+   AND  date = ????????
+   AND  ville = '?????????????????????????';"></sql-exercise>
+                    </div>
+                    <p>
+                        Lisez la <code>description</code> obtenue&nbsp;: deux témoins y sont décrits.
+                        C'est votre première vraie piste.
+                    </p>
+                </article>
+
+                <article class="card b-full reveal">
+                    <p class="section-kicker">Étape 4 · ORDER BY</p>
+                    <h3>Trier pour trouver</h3>
+                    <p>
+                        <code>ORDER BY colonne DESC</code> trie du plus grand au plus petit
+                        (<code>ASC</code> fait l'inverse). Avec <code>LIMIT 1</code>, vous obtenez le
+                        « maximum&nbsp;». Le rapport dit que le témoin n°1 habite la
+                        <strong>dernière maison</strong> de la rue des Alizés&nbsp;: la table
+                        <code>personne</code> a une colonne <code>adresse_numero</code>…
+                    </p>
+                    <div class="console-card">
+                        <sql-exercise data-question="Qui habite au numéro le plus élevé de la rue des Alizés&nbsp;?" data-comment="SELECT * FROM personne WHERE rue = 'rue des Alizés' ORDER BY adresse_numero DESC LIMIT 1;" data-solution="SELECT * FROM personne WHERE rue = 'rue des Alizés' ORDER BY adresse_numero DESC LIMIT 1;" data-hide-solution="true" data-default-text="SELECT * FROM personne
+ WHERE rue = '?????????????'
+ ORDER BY ???????????? DESC
+ LIMIT 1;"></sql-exercise>
+                    </div>
+                    <p>
+                        Est-ce bien la bonne personne&nbsp;? Le rapport précise qu'elle possède un chat
+                        nommé <strong>Capitaine NUL</strong>. Les interrogatoires sont dans la table
+                        <code>interview</code>, reliée par <code>personne_id</code>.
+                    </p>
+                    <div class="console-card">
+                        <sql-exercise data-question="Affichez la transcription du témoin que vous venez de trouver (son id est dans la colonne `id` du résultat précédent)." data-comment="SELECT * FROM interview WHERE personne_id = 10005;  (10005 est l'id de Mireille Toupin)" data-solution="SELECT * FROM interview WHERE personne_id = 10005;" data-hide-solution="true" data-default-text="SELECT * FROM interview
+ WHERE personne_id = ?????;"></sql-exercise>
+                    </div>
+                    <p>
+                        «&nbsp;Capitaine NUL&nbsp;!&nbsp;» — c'est bien elle. Dans son récit se
+                        cachent deux indices&nbsp;: une <strong>plaque d'immatriculation</strong> et
+                        une <strong>salle de sport</strong>.
+                    </p>
+                </article>
+
+                <article class="card b-full reveal">
+                    <p class="section-kicker">Étape 5 · JOIN</p>
+                    <h3>Relier les tables entre elles</h3>
+                    <p>
+                        Chaque table ne contient qu'un morceau de la vérité. Les tables communiquent
+                        grâce aux <strong>clés étrangères</strong>&nbsp;: une colonne qui contient
+                        l'<code>id</code> d'une ligne d'une autre table. <code>JOIN … ON</code> soude
+                        deux tables ligne par ligne, et <code>WHERE</code> filtre le résultat combiné.
+                    </p>
+                    <p>
+                        Reprenez l'indice de la camionnette&nbsp;: plaque de <strong>7
+                        caractères</strong>, commençant par <strong>BK</strong> et contenant
+                        <strong>94</strong>. Cette info est dans <code>permis_conduire</code>, pas
+                        dans <code>personne</code>.
+                    </p>
+                    <div class="console-card">
+                        <sql-exercise data-question="Qui roule dans un véhicule dont la plaque commence par BK et contient 94&nbsp;?" data-comment="Le joker LIKE sert à comparer un texte avec des motifs : 'BK%' = commence par BK, '%94%' = contient 94." data-solution="SELECT p.id, p.nom, d.plaque FROM personne p JOIN permis_conduire d ON d.id = p.permis_id WHERE d.plaque LIKE 'BK%' AND d.plaque LIKE '%94%' AND LENGTH(d.plaque) = 7;" data-hide-solution="true" data-default-text="SELECT p.id, p.nom, d.plaque
+  FROM personne p
+  JOIN permis_conduire d ON d.id = p.???????
+ WHERE d.plaque LIKE 'BK%'
+   AND d.plaque LIKE '%94%';"></sql-exercise>
+                    </div>
+                    <p>
+                        Attention&nbsp;: plusieurs personnes correspondent&nbsp;! La plaque seule ne
+                        suffit pas. C'est là qu'intervient le second indice&nbsp;: la
+                        <strong>salle de sport La Fonte d'Acier</strong>. Les deux pilleurs y sont
+                        allés <em>le matin du 17 octobre avant 12&nbsp;h</em>, avec un abonnement
+                        <strong>or</strong>.
+                    </p>
+                    <div class="console-card">
+                        <sql-exercise data-question="Quels membres « or » de la salle étaient présents le matin du 17 octobre (avant 12 h)&nbsp;?" data-comment="Trois tables à souder : abonnement_salle -> personne, et abonnement_salle -> entree_salle. La date 20261017 est dans entree_salle.date_entree." data-solution="SELECT p.id, p.nom, e.date_entree, e.heure_entree FROM abonnement_salle a JOIN personne p ON p.id = a.personne_id JOIN entree_salle e ON e.abonnement_id = a.id WHERE a.statut = 'or' AND e.date_entree = 20261017 AND e.heure_entree < 1200;" data-hide-solution="true" data-default-text="SELECT p.id, p.nom, e.date_entree, e.heure_entree
+  FROM abonnement_salle a
+  JOIN personne p       ON p.id = a.personne_id
+  JOIN entree_salle e   ON e.abonnement_id = a.??
+ WHERE a.statut = '??'
+   AND e.date_entree = ????????
+   AND e.heure_entree < ????;"></sql-exercise>
+                    </div>
+                    <p>
+                        Vous tenez les coupables&nbsp;: recoupez les deux listes (la plaque <em>et</em>
+                        la salle), puis confirmez avec leurs <code>interview</code>. Le récit de l'un
+                        d'eux contient une révélation de taille.
+                    </p>
+                </article>
+
+                <article class="card b-full reveal">
+                    <p class="section-kicker">Le schéma</p>
+                    <h3>Toutes les tables de l'enquête</h3>
+                    <p>
+                        Mais <a id="show-schema">cliquez ici</a> pour afficher le schéma de la base.
+                    </p>
+                    <div id="experienced-schema" class="console-card">
+                        <table class="schema-table">
+                            <tr><td><strong>rapport_police</strong></td><td>date, type, description, ville — les plaintes et PV de la région</td></tr>
+                            <tr><td><strong>personne</strong></td><td>id, nom, permis_id, adresse_numero, rue, matricule — les habitants</td></tr>
+                            <tr><td><strong>permis_conduire</strong></td><td>id, age, taille, couleur_yeux, couleur_cheveux, genre, plaque, marque_voiture, modele_voiture</td></tr>
+                            <tr><td><strong>revenus</strong></td><td>matricule, revenu_annuel</td></tr>
+                            <tr><td><strong>interview</strong></td><td>personne_id, transcription — les interrogatoires</td></tr>
+                            <tr><td><strong>abonnement_salle</strong></td><td>id, personne_id, nom, date_debut, statut — la salle de sport « La Fonte d'Acier »</td></tr>
+                            <tr><td><strong>entree_salle</strong></td><td>abonnement_id, date_entree, heure_entree, heure_sortie — les pointages</td></tr>
+                            <tr><td><strong>evenement_reseaux</strong></td><td>personne_id, evenement_id, nom_evenement, date — les « J'y suis » aux événements</td></tr>
+                            <tr><td><strong>solution</strong></td><td>utilisateur, valeur — pour vérifier votre réponse en bas de la page d'accueil</td></tr>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="card b-full reveal">
+                    <p class="section-kicker">À vous de jouer</p>
+                    <h3>Bonne chance, détective</h3>
+                    <p>
+                        Vous savez lire un rapport, retrouver un témoin, interroger les gens et relier
+                        les tables&nbsp;: c'est tout ce qu'il faut pour toute l'enquête. Les indices
+                        restants sont cachés dans les transcriptions et les pointages de
+                        <em>La Fonte d'Acier</em>&nbsp;: recoupez, joignez, filtrez, et les coupables
+                        tomberont.
+                    </p>
+                    <div class="hero-cta">
+                        <a class="btn btn-primary" href="index.html#check-solution">Vérifier mes réponses</a>
+                        <a class="btn btn-ghost" href="index.html">Retour à l'enquête</a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="wrap">
+                Projet pédagogique « Le Pillage » — code adapté du SQL Murder Mystery du Knight Lab (MIT / CC BY-SA 4.0).
+            </div>
+        </footer>
+    </main>
+
+    <script type="text/javascript">
+        document.querySelector('#show-schema').addEventListener('click', function() {
+            document.querySelector('#experienced-schema').classList.add('show');
+        });
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            && 'IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+                });
+            }, {threshold: .12});
+            document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+        } else {
+            document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+        }
+    </script>
+</body>
+
+</html>

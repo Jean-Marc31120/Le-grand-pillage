@@ -1,0 +1,234 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+
+    <title>Le Pillage — l'enquête SQL</title>
+    <meta name="description" content="Une vitrine brisée, une camionnette, deux indices. Résolvez une enquête policière avec des requêtes SQL. Pour débutants comme pour experts, entièrement en français.">
+    <meta name="color-scheme" content="dark">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
+    </link>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/neat.css" />
+    <link rel="stylesheet" href="pillage.css" />
+
+    <script src="https://unpkg.com/@webcomponents/custom-elements@1.2.0/custom-elements.min.js"></script>
+    <script src="scripts/codemirror.js"></script>
+    <script src="scripts/codemirrorsql.js"></script>
+    <script src="scripts/autorefresh.js"></script>
+    <script src="scripts/main.js"></script>
+    <script>
+        window.onload = () => loadData('pillage.db');
+    </script>
+</head>
+
+<body>
+    <a class="skip-link" href="#enquete">Aller au contenu</a>
+
+    <main>
+        <div class="wrap">
+
+            <!-- HERO -->
+            <header class="hero reveal">
+                <p class="hero-kicker">Joinville-sur-Requête · 17 octobre 2026</p>
+                <h1 class="hero-title">
+                    <span class="l1">LE</span>
+                    <span class="l2">PILLAGE</span>
+                </h1>
+                <p class="hero-sub">
+                    Une vitrine brisée, une camionnette qui démarre en trombe, deux témoins.
+                    La seule arme du détective&nbsp;: <strong>le SQL</strong>.
+                </p>
+                <div class="hero-cta">
+                    <a class="btn btn-primary" href="#enquete">Commencer l'enquête ↓</a>
+                    <a class="btn btn-ghost" href="guide.html">Je débute en SQL</a>
+                </div>
+            </header>
+
+            <!-- BENTO PRÉSENTATION -->
+            <section aria-label="Le dossier">
+                <div class="bento">
+                    <article class="card b-hero reveal">
+                        <p class="section-kicker">Le dossier</p>
+                        <h3>Tout a basculé en marge du cortège</h3>
+                        <p>
+                            Le soir du 17 octobre 2026, pendant que la France manifestait contre la vie
+                            chère, le magasin <strong>Électro+</strong> de Joinville-sur-Requête était
+                            pillé&nbsp;: téléphones et ordinateurs disparaissaient dans une camionnette
+                            grise.
+                        </p>
+                        <p>
+                            Ce mystère est une leçon autonome de SQL&nbsp;: aucune table ne vous est
+                            présentée, aucun indice n'est surligné. Les tables, leur contenu et les
+                            indices se mélangent — seul votre SQL fera la lumière.
+                        </p>
+                    </article>
+                    <figure class="card b-photo reveal" aria-hidden="true">
+                        <img src="intro.svg" alt="">
+                    </figure>
+                    <article class="card b-debut reveal">
+                        <p class="section-kicker">Grand débutant&nbsp;?</p>
+                        <h3>Le guide pas à pas</h3>
+                        <p>
+                            SELECT, WHERE, JOIN… chaque notion s'apprend en faisant avancer l'enquête,
+                            avec autocorrection.
+                        </p>
+                        <p><a href="guide.html">Ouvrir le guide →</a></p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- ENQUÊTE -->
+            <section id="enquete">
+                <p class="section-kicker reveal">Détectives chevronnés</p>
+                <h2 class="section-title reveal">À vous de jouer</h2>
+
+                <div class="card b-full reveal">
+                    <p>
+                        Un crime a été commis et le commissariat a besoin de vous. On vous a remis le
+                        procès-verbal, mais vous l'avez égaré. Vous vous souvenez vaguement qu'il
+                        s'agissait d'un <strong>pillage</strong> survenu le <strong>17 octobre
+                        2026</strong> à <strong>Joinville-sur-Requête</strong>, en marge des grandes
+                        manifestations contre la vie chère.
+                    </p>
+                    <div class="memo" role="note">
+                        Ce dont vous vous souvenez — c'est tout&nbsp;: un <strong>pillage</strong>,
+                        le <strong>17 octobre 2026</strong>, à <strong>Joinville-sur-Requête</strong>.
+                        Retrouvez le rapport dans la base de la police. Le reste ne sera pas offert.
+                    </div>
+                </div>
+
+                <h3 class="reveal" style="font-size:1.3rem;">Explorer la structure de la base</h3>
+                <p class="reveal">
+                    Un bon détective devine la forme d'une base rien qu'en la questionnant. Ce mystère
+                    est construit avec SQLite&nbsp;: la commande ci-dessous liste les tables de
+                    l'enquête.
+                </p>
+
+                <div class="console-card reveal">
+                    <sql-exercise data-question="Exécutez cette requête pour trouver le nom des tables de cette base." data-comment="Cette commande est propre à SQLite. Avec d'autres bases de données, il faudra apprendre leur syntaxe spécifique." data-default-text="SELECT name 
+  FROM sqlite_master
+ WHERE type = 'table';"></sql-exercise>
+                </div>
+
+                <p class="reveal">
+                    Connaître les noms de tables ne suffit pas&nbsp;: il faut la structure de chacune.
+                    Voici comment faire avec SQLite.
+                </p>
+
+                <div class="console-card reveal">
+                    <sql-exercise data-question="Exécutez cette requête pour découvrir la structure de la table `rapport_police`" data-comment="Changez la valeur de 'name' pour découvrir la structure des autres tables trouvées avec la requête précédente." data-default-text="SELECT sql 
+  FROM sqlite_master
+ WHERE name = 'rapport_police';"></sql-exercise>
+                </div>
+
+                <p class="reveal">
+                    Mais <a id="show-schema">cliquez ici</a> pour afficher le schéma complet de la base.
+                </p>
+                <div id="experienced-schema" class="console-card">
+                    <table class="schema-table">
+                        <tr><td><strong>rapport_police</strong></td><td>date, type, description, ville — les plaintes et PV de la région</td></tr>
+                        <tr><td><strong>personne</strong></td><td>id, nom, permis_id, adresse_numero, rue, matricule — les habitants</td></tr>
+                        <tr><td><strong>permis_conduire</strong></td><td>id, age, taille, couleur_yeux, couleur_cheveux, genre, plaque, marque_voiture, modele_voiture</td></tr>
+                        <tr><td><strong>revenus</strong></td><td>matricule, revenu_annuel</td></tr>
+                        <tr><td><strong>interview</strong></td><td>personne_id, transcription — les interrogatoires</td></tr>
+                        <tr><td><strong>abonnement_salle</strong></td><td>id, personne_id, nom, date_debut, statut — la salle de sport « La Fonte d'Acier »</td></tr>
+                        <tr><td><strong>entree_salle</strong></td><td>abonnement_id, date_entree, heure_entree, heure_sortie — les pointages</td></tr>
+                        <tr><td><strong>evenement_reseaux</strong></td><td>personne_id, evenement_id, nom_evenement, date — les « J'y suis » aux événements</td></tr>
+                        <tr><td><strong>solution</strong></td><td>utilisateur, valeur — pour vérifier votre réponse</td></tr>
+                    </table>
+                </div>
+                <p class="reveal">Et le <a href="guide.html">guide du débutant</a> reste à une clic.</p>
+
+                <div class="console-card reveal" id="freeplay-item">
+                    <sql-exercise data-question="Servez-vous du schéma et de vos connaissances en SQL pour découvrir qui a commis le pillage." data-comment="Quand vous pensez connaître la réponse, passez à la section suivante." data-default-text="
+              
+              
+ 
+
+
+ 
+              "></sql-exercise>
+                    <!-- les sauts de ligne de data-default-text agrandissent la zone de saisie -->
+                    <p style="margin-top:12px;">
+                        <button id="add-console" class="btn btn-ghost" type="button">➕ Nouvelle console dessous</button>
+                        <span style="margin-left:12px;opacity:.75;">Gardez chaque résultat sous les yeux&nbsp;: les consoles s'empilent sans jamais s'écraser.</span>
+                    </p>
+                </div>
+            </section>
+
+            <!-- VÉRIFICATION -->
+            <section id="check-solution" aria-label="Vérifier sa solution">
+                <p class="section-kicker reveal">Le moment de vérité</p>
+                <h2 class="section-title reveal">Vérifiez votre solution</h2>
+                <p class="reveal" style="max-width:60ch;color:var(--muted);">
+                    Entrez les <strong>deux pilleurs</strong> au format
+                    <code>Prénom Nom et Prénom Nom</code> (avec les majuscules exactes).
+                    Qui sait&nbsp;: si vous voyez juste, l'enquête ne sera peut-être pas finie pour
+                    autant…
+                </p>
+                <div class="console-card reveal">
+                    <sql-exercise data-question="Avez-vous trouvé les coupables&nbsp;?" data-comment="" data-default-text="INSERT INTO solution VALUES (1, 'Insérez ici les noms des coupables');
+        
+        SELECT valeur FROM solution;"></sql-exercise>
+                </div>
+            </section>
+
+            <!-- CRÉDITS -->
+            <section id="credits" aria-label="Crédits">
+                <h2 class="section-title reveal" style="font-size:1.3rem;">Crédits</h2>
+                <div class="card b-full reveal" style="color:var(--muted);font-size:.92rem;">
+                    <p>Ce mystère est une création originale française inspirée du <a href="http://mystery.knightlab.com/">SQL Murder Mystery</a>, créé par <a href="https://twitter.com/joonparkmusic">Joon Park</a> et <a href="https://twitter.com/Cathy_MeiyingHe">Cathy He</a> lorsqu'ils étaient fellows du <a href="https://knightlab.northwestern.edu/">Knight Lab</a>. Le code d'origine est publié sous <a href="https://github.com/NUKnightLab/sql-mysteries/blob/master/LICENSE">licence MIT</a>.</p>
+                    <p>Le SQL dans le navigateur est rendu possible par <a href="https://github.com/sql-js/sql.js/">SQL.js</a>. Les composants web « requête SQL » ont été créés et placés dans le domaine public par Zi Chong Kao, l'auteur de <a href="https://selectstarsql.com/">Select Star SQL</a>.</p>
+                    <p>Illustration&nbsp;: création originale (SVG), librement adaptée des événements du 17 octobre 2026. Enquête et personnages entièrement fictifs.</p>
+                </div>
+            </section>
+
+        </div>
+
+        <footer class="footer">
+            <div class="wrap">
+                Projet pédagogique « Le Pillage » — code adapté du SQL Murder Mystery du Knight Lab (MIT / CC BY-SA 4.0).
+            </div>
+        </footer>
+    </main>
+
+    <script type="text/javascript">
+        document.querySelector('#show-schema').addEventListener('click', function() {
+            document.querySelector('#experienced-schema').classList.add('show');
+        });
+        var consoleCount = 0;
+        document.querySelector('#add-console').addEventListener('click', function() {
+            consoleCount += 1;
+            var ex = document.createElement('sql-exercise');
+            ex.setAttribute('data-question', 'Console de brouillon n°' + consoleCount + ' — chaque console garde son résultat affiché.');
+            ex.setAttribute('data-comment', 'Astuce : Maj+Entrée pour exécuter.');
+            ex.setAttribute('data-default-text', '\n\n');
+            var card = document.querySelector('#freeplay-item');
+            card.appendChild(ex);
+            card.scrollIntoView({behavior: 'smooth', block: 'center'});
+        });
+
+        // révélation au scroll (désactivée si l'utilisateur limite les animations)
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            && 'IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+                });
+            }, {threshold: .12});
+            document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+        } else {
+            document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+        }
+    </script>
+
+</body>
+
+</html>
