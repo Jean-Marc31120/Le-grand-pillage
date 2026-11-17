@@ -77,6 +77,27 @@
                 </article>
 
                 <article class="card b-full reveal">
+                    <p class="section-kicker">Le schéma</p>
+                    <h3>Toutes les tables de l'enquête</h3>
+                    <p>
+                        Mais <a id="show-schema">cliquez ici</a> pour afficher le schéma de la base.
+                    </p>
+                    <div id="experienced-schema" class="console-card">
+                        <table class="schema-table">
+                            <tr><td><strong>rapport_police</strong></td><td>date, type, description, ville — les plaintes et PV de la région</td></tr>
+                            <tr><td><strong>personne</strong></td><td>id, nom, permis_id, adresse_numero, rue, matricule — les habitants</td></tr>
+                            <tr><td><strong>permis_conduire</strong></td><td>id, age, taille, couleur_yeux, couleur_cheveux, genre, plaque, marque_voiture, modele_voiture</td></tr>
+                            <tr><td><strong>revenus</strong></td><td>matricule, revenu_annuel</td></tr>
+                            <tr><td><strong>interview</strong></td><td>personne_id, transcription — les interrogatoires</td></tr>
+                            <tr><td><strong>abonnement_salle</strong></td><td>id, personne_id, nom, date_debut, statut — la salle de sport « La Fonte d'Acier »</td></tr>
+                            <tr><td><strong>entree_salle</strong></td><td>abonnement_id, date_entree, heure_entree, heure_sortie — les pointages</td></tr>
+                            <tr><td><strong>evenement_reseaux</strong></td><td>personne_id, evenement_id, nom_evenement, date — les « J'y suis » aux événements</td></tr>
+                            <tr><td><strong>solution</strong></td><td>utilisateur, valeur — pour vérifier votre réponse en bas de la page d'accueil</td></tr>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="card b-full reveal">
                     <p class="section-kicker">Étape 2 · SELECT</p>
                     <h3>Demander des données</h3>
                     <p>
@@ -185,27 +206,6 @@
                         la salle), puis confirmez avec leurs <code>interview</code>. Le récit de l'un
                         d'eux contient une révélation de taille.
                     </p>
-                </article>
-
-                <article class="card b-full reveal">
-                    <p class="section-kicker">Le schéma</p>
-                    <h3>Toutes les tables de l'enquête</h3>
-                    <p>
-                        Mais <a id="show-schema">cliquez ici</a> pour afficher le schéma de la base.
-                    </p>
-                    <div id="experienced-schema" class="console-card">
-                        <table class="schema-table">
-                            <tr><td><strong>rapport_police</strong></td><td>date, type, description, ville — les plaintes et PV de la région</td></tr>
-                            <tr><td><strong>personne</strong></td><td>id, nom, permis_id, adresse_numero, rue, matricule — les habitants</td></tr>
-                            <tr><td><strong>permis_conduire</strong></td><td>id, age, taille, couleur_yeux, couleur_cheveux, genre, plaque, marque_voiture, modele_voiture</td></tr>
-                            <tr><td><strong>revenus</strong></td><td>matricule, revenu_annuel</td></tr>
-                            <tr><td><strong>interview</strong></td><td>personne_id, transcription — les interrogatoires</td></tr>
-                            <tr><td><strong>abonnement_salle</strong></td><td>id, personne_id, nom, date_debut, statut — la salle de sport « La Fonte d'Acier »</td></tr>
-                            <tr><td><strong>entree_salle</strong></td><td>abonnement_id, date_entree, heure_entree, heure_sortie — les pointages</td></tr>
-                            <tr><td><strong>evenement_reseaux</strong></td><td>personne_id, evenement_id, nom_evenement, date — les « J'y suis » aux événements</td></tr>
-                            <tr><td><strong>solution</strong></td><td>utilisateur, valeur — pour vérifier votre réponse en bas de la page d'accueil</td></tr>
-                        </table>
-                    </div>
                 </article>
 
                 <article class="card b-full reveal">
